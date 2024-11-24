@@ -1,0 +1,36 @@
+header {
+    background-color: #007BFF;
+    padding: 0;
+}
+
+header nav {
+    position: relative;
+}
+
+header ul {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+}
+
+header a {
+    color: white;
+}
+
+.profile-menu {
+    height: 40dvh;
+    width: 20vw;
+    position: absolute;
+    right: 20px;
+    list-style-type: none;
+    background-color: #007BFF;
+}
+
+.profile-menu ul {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px;
+}
