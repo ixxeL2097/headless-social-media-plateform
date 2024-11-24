@@ -1,0 +1,42 @@
+/* MyPosts.css */
+
+.myposts-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    height: 100vh;
+}
+
+.myposts-container ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.myposts-container ul li {
+    list-style: none;
+    border: 1px solid #E9ECEF;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #F8F9FA;
+    box-shadow: rgba(0, 0, 0, 0.1);
+}
+
+.myposts-container .top {
+    padding-bottom: 10px;
+}
+
+button.modify {
+    background-color: #007BFF;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
+
+button.delete {
+    background-color: #DC3545;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+}
