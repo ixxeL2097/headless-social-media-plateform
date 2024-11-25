@@ -19,6 +19,10 @@ header a {
     color: white;
 }
 
+header a:hover {
+    color: #FD7E14
+}
+
 .profile-menu {
     height: 40dvh;
     width: 20vw;

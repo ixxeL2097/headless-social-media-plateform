@@ -10,7 +10,6 @@ const Header = () => {
     { text: 'Créer un Post', link: '/content/create', class: 'create-post' },
     { text: 'Mes Posts', link: '/content/my-posts', class: 'my-posts' },
     { text: 'Explorer', link: '/content/explore', class: 'explore' },
-    { text: 'Charger un media', link: '/media/upload', class: 'upload-media' },
     { text: 'Mes medias', link: '/media/my-media', class: 'my-media' },
     { text: 'Mon profil', class: 'profile' },
   ];
