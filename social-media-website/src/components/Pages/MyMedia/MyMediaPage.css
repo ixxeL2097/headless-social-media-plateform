@@ -1,0 +1,37 @@
+.my-media-page {
+    height: 100dvh;
+}
+
+.my-media-page h1 {
+    margin: 20px 0 20px 20px;
+}
+
+.upload-section {
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #ccc;
+    width: fit-content;
+    margin: 0 auto;
+    border-radius: 5px;
+}
+
+.media-list {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding-top: 20px;
+}
+
+.copy-url {
+    background-color: #17A2B8;
+    border: none;
+    padding: 10px;
+    margin-left: 5px;
+    border-radius: 5px;
+    color: white;
+}
+
+.copy-url:hover {
+    background-color: #007BFF;
+}
