@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import './CreatePost.css';
+import { usePosts } from '../../../context/PostsContext';
 
-const CreatePost = () => {
+const CreatePost = ({ onSubmit, onCancel }) => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [media, setMedia] = useState(null); // Gestion des médias (optionnel)
+    const { addPost } = usePosts(); // Accède à la fonction addPost du contexte
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Handle post submission logic here
-        console.log('Post submitted:', { title, content });
+        if (title && content) {
+            addPost({ title, content, author: 'Anonymous', date: new Date().toISOString().split('T')[0] });
+            setTitle('');
+            setContent('');
+            setMedia(null);
+        }
     };
 
     return (
@@ -16,14 +23,14 @@ const CreatePost = () => {
             <h2>Créer un nouveau Post</h2>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="title">Title</label>
+                    <label htmlFor="title">Titre</label>
                     <input
                         type="text"
                         id="title"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         required
-                        placeholder='Titre'
+                        placeholder="Titre"
                     />
                 </div>
                 <div className="form-group">
@@ -33,10 +40,22 @@ const CreatePost = () => {
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         required
-                        placeholder='Contenu'
+                        placeholder="Contenu"
                     ></textarea>
                 </div>
-                <button type="submit">Envoyer</button>
+                <div className="form-group">
+                    <label htmlFor="media">Charger un média</label>
+                    <input
+                        type="file"
+                        id="media"
+                        accept="image/*, video/*"
+                        onChange={(e) => setMedia(e.target.files[0])}
+                    />
+                </div>
+                <button className='submit' type="submit">Envoyer</button>
+                <button className='cancel' type="button" onClick={onCancel}>
+                    Annuler
+                </button>
             </form>
         </div>
     );
