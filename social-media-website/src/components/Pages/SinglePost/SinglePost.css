@@ -1,0 +1,23 @@
+.single-post {
+    padding: 20px;
+}
+
+.back-button {
+    padding: 15px 20px;
+    margin: 10px;
+    background-color: #E9ECEF;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #212529;
+}
+
+.back-button:hover {
+    background-color: #CED4DA;
+}
+
+.post-actions {
+    padding-top: 20px;
+    display: flex;
+    gap: 5px;
+}
