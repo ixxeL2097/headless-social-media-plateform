@@ -1,0 +1,86 @@
+# https://taskfile.dev
+
+version: "3"
+
+tasks:
+  psql:connect:
+    desc: Connect to PostgreSQL DB
+    vars:
+      PGUSER: '{{ .PGUSER | default "user_service" }}'
+      PGPWD: '{{ .PGPWD | default "password123" }}'
+      PGHOST: '{{ .PGHOST | default "localhost" }}'
+      PGPORT: '{{ .PGPORT | default "5432" }}'
+      PGDB: '{{ .PGDB | default "user_db" }}'
+    cmds:
+      - |
+        psql postgresql://{{ .PGUSER }}:{{ .PGPWD }}@{{ .PGHOST }}:{{ .PGPORT }}/{{ .PGDB }}
+
+  psql:tables:
+    desc: Displqy PostgreSQL tables
+    vars:
+      PGUSER: '{{ .PGUSER | default "user_service" }}'
+      PGPWD: '{{ .PGPWD | default "password123" }}'
+      PGHOST: '{{ .PGHOST | default "localhost" }}'
+      PGPORT: '{{ .PGPORT | default "5432" }}'
+      PGDB: '{{ .PGDB | default "user_db" }}'
+    cmds:
+      - |
+        psql postgresql://{{ .PGUSER }}:{{ .PGPWD }}@{{ .PGHOST }}:{{ .PGPORT }}/{{ .PGDB }} -c "\dt"
+
+  compose:
+    desc: run and build with docker composeps
+    cmds:
+      - |
+        docker compose up -d --build --force-recreate
+
+  build:
+    desc: Build docker image for users microservice with Buildx
+    vars:
+      TAG: '{{ .TAG | default "test" }}'
+    cmds:
+      - |
+        docker buildx build --no-cache -t users:py-{{ .TAG }} .
+
+  build:podman:
+    desc: Build docker image for users microservice with Podman
+    vars:
+      TAG: '{{ .TAG | default "test" }}'
+    cmds:
+      - |
+        podman build --no-cache -t users:py-{{ .TAG }} .
+
+  push:docker:
+    desc: Push docker image to registry
+    vars:
+      TAG: '{{ .TAG | default "test" }}'
+      REGISTRY: '{{ .REGISTRY | default "ixxel" }}'
+    cmds:
+      - |
+        docker tag users:py-{{ .TAG }} {{ .REGISTRY }}/users:py-{{ .TAG }}
+        docker push {{ .REGISTRY }}/users:py-{{ .TAG }}
+
+  push:podman:
+    desc: Push docker image to registry
+    vars:
+      TAG: '{{ .TAG | default "test" }}'
+      REGISTRY: '{{ .REGISTRY | default "ixxel" }}'
+    cmds:
+      - |
+        podman tag users:py-{{ .TAG }} {{ .REGISTRY }}/users:py-{{ .TAG }}
+        podman push {{ .REGISTRY }}/users:py-{{ .TAG }}
+
+  run:docker:
+    desc: run the server locally with Docker
+    vars:
+      PORT: '{{ .PORT | default "8080" }}'
+      TAG: '{{ .TAG | default "test" }}'
+    cmds:
+    - docker run --rm --name users -d -e APP_PORT={{ .PORT }} -p {{ .PORT }}:{{ .PORT }} users:py-{{ .TAG }}
+
+  run:podman:
+    desc: run the server locally with Podman
+    vars:
+      PORT: '{{ .PORT | default "8080" }}'
+      TAG: '{{ .TAG | default "test" }}'
+    cmds:
+    - podman run --rm --name users -d -e APP_PORT={{ .PORT }} -p {{ .PORT }}:{{ .PORT }} users:py-{{ .TAG }}

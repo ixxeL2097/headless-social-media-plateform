@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:15
+    container_name: psql
+    environment:
+      POSTGRES_USER: user_service
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: user_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../../scripts/init-pgsql.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - my_network
+
+  user_service:
+    build: .
+    image: user-service:latest
+    depends_on:
+      - postgres
+    container_name: users
+    environment:
+      DATABASE_URL: postgresql://user_service:password123@postgres:5432/user_db
+      APP_PORT: "8080"
+    ports:
+      - "8080:8080"
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
