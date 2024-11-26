@@ -1,8 +1,9 @@
 from fastapi import FastAPI, UploadFile, HTTPException
-from azure.storage.blob import BlobServiceClient, BlobClient, generate_blob_sas, BlobSasPermissions
+from azure.storage.blob import BlobServiceClient, BlobSasPermissions, generate_blob_sas
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
+from mimetypes import guess_type
 
 # Charger les variables d'environnement
 load_dotenv()
@@ -43,10 +44,29 @@ def generate_sas_url(blob_name: str) -> str:
     )
     return f"https://{STORAGE_ACCOUNT_NAME}.blob.core.windows.net/{CONTAINER_NAME}/{blob_name}?{sas_token}"
 
+# Liste des types MIME autorisés pour les images et vidéos
+ALLOWED_MIME_TYPES = [
+    "image/jpeg",
+    "image/png",
+    "image/gif",
+    "video/mp4",
+    "video/mpeg",
+    "video/avi",
+    "video/quicktime",
+]
+
 # Endpoint pour uploader un fichier
 @app.post("/media/upload")
 async def upload_file(file: UploadFile):
     try:
+        # Vérifier le type MIME
+        mime_type, _ = guess_type(file.filename)
+        if mime_type not in ALLOWED_MIME_TYPES:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid file type. Only images and videos are allowed.",
+            )
+
         # Créer un BlobClient pour le fichier
         blob_client = container_client.get_blob_client(file.filename)
 
